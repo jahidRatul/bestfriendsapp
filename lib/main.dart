@@ -1,5 +1,6 @@
 import 'package:bestfriend/registerPage.dart';
 import 'package:flutter/material.dart';
+import 'homePage.dart';
 import 'loginPage.dart';
 
 
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
 
         LoginPage.id: (BuildContext context) => LoginPage(),
         RegisterPage.id: (BuildContext context) => RegisterPage(),
+        HomePage.id: (BuildContext context) => HomePage(),
 
       },
     );
