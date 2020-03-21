@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'registerPage.dart';
 import 'homePage.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = 'loginPage';
@@ -147,6 +149,9 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
     final uri = 'http://test.bestfriends.com.bd/api/login';
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     var map = new Map<String, dynamic>();
 
     map['mobile_no'] = mobileController.text;
@@ -156,7 +161,9 @@ class _LoginPageState extends State<LoginPage> {
       uri,
       body: map,
     );
-    print(response.body.toString());
+    Map<String, dynamic> user = jsonDecode(response.body);
+    print(" show token --> " + user['accessToken']);
+    prefs.setString("accessKey", user['accessToken']);
 
     Navigator.pushNamed(context, HomePage.id);
 

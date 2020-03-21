@@ -1,3 +1,4 @@
+import 'package:bestfriend/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'homePage.dart';
@@ -165,7 +166,7 @@ class _LoginPageState extends State<RegisterPage> {
     );
     print(response.body.toString());
 
-    Navigator.pushNamed(context, HomePage.id);
+    Navigator.pushNamed(context, LoginPage.id);
 
     setState(() {
       _isLoading = false;
