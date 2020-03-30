@@ -41,10 +41,12 @@ class _HomePageState extends State<HomePage> {
       headers: _setHeaders(),
     );
     Map<String, dynamic> user = jsonDecode(response.body);
-    // print("Full Response body ->" + response.body);
+    print("Full Response body ->" + response.body);
     //  print("User name-> " + user['user']['name']);
-    name = user['user']['name'];
-    pNumber = user['user']['mobile_no'];
+    setState(() {
+      name = user['user']['name'];
+      pNumber = user['user']['mobile_no'];
+    });
   }
 
   @override
