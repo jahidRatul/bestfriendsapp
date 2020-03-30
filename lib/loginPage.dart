@@ -79,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(40))),
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         cursorColor: Color(0xFF9b9b9b),
                         controller: passwordController,
                         decoration: InputDecoration(
@@ -162,8 +163,10 @@ class _LoginPageState extends State<LoginPage> {
       body: map,
     );
     Map<String, dynamic> user = jsonDecode(response.body);
-    print(" show token --> " + user['accessToken']);
-    prefs.setString("accessKey", user['accessToken']);
+//    print(response.body);
+//    print("access token -> " + user['access_token']);
+
+    prefs.setString("accessKey", user['access_token']);
 
     Navigator.pushNamed(context, HomePage.id);
 

@@ -1,7 +1,6 @@
 import 'package:bestfriend/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'homePage.dart';
 
 class RegisterPage extends StatefulWidget {
   static String id = 'registerPage';

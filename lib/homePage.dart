@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:bestfriend/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   static String id = 'homePage';
@@ -12,48 +12,114 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var userData;
+  String userToken;
+  bool isAuth = false;
+  var name;
+  var pNumber;
+
+  final uri = 'http://test.bestfriends.com.bd/api/mdshadhin';
 
   @override
   void initState() {
     _getUserInfo();
+
     super.initState();
   }
 
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var userKey = localStorage.getString('accessKey');
+    String userKey = localStorage.getString('accessKey');
+    print("userkey is -> " + userKey);
 
-    setState(() {
-      userData = userKey;
-    });
+    _setHeaders() => {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userKey'
+        };
+
+    http.Response response = await http.get(
+      uri,
+      headers: _setHeaders(),
+    );
+    Map<String, dynamic> user = jsonDecode(response.body);
+    print("Full Response body ->" + response.body);
+    print("User name-> " + user['user']['name']);
+    name = user['user']['name'];
+    pNumber = user['user']['mobile_no'];
   }
 
   @override
   Widget build(BuildContext context) {
-//      var key = this._showToken().toString();
-    return ListView(
-      children: <Widget>[
-        Card(
-          child: Text(
-            userData != null ? "Access token ->" + userData : '',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Color(0xFF9b9b9b),
-              fontSize: 15.0,
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.normal,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Best Friends Inc'),
+        centerTitle: true,
+      ),
+      drawer: Drawer(
+          child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('Drawer Header'),
+            decoration: BoxDecoration(
+              color: Colors.blue,
             ),
           ),
-        ),
-      ],
+          ListTile(
+            title: Text('Item 1'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text('Item 2'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      )),
+      endDrawer: Drawer(
+          child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: Text('$name'),
+            accountEmail: Text('$pNumber'),
+            currentAccountPicture: CircleAvatar(
+              child: FlutterLogo(size: 40),
+              backgroundColor: Colors.white,
+            ),
+          ),
+          ListTile(
+            title: Text('Item 1'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text('Item 2'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      )),
+      body: Container(),
     );
   }
-
-//  String _showToken() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    var accessKey = prefs.getString('accessKey');
-//    print("from home ->" + accessKey);
-//    return accessKey;
-//  }
 }
